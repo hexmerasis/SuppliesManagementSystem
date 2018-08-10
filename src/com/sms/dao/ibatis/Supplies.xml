@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sqlmap-2.dtd">
+<sqlMap namespace="Supplies">
+	<typeAlias alias="getIssueClass" type="com.sms.entity.TableView"/>
+	<typeAlias alias="getItemsClass" type="com.sms.entity.ItemNames"/>
+	<typeAlias alias="getDepartmentsClass" type="com.sms.entity.Departments"/>	
+	<typeAlias alias="getSuppliesClass" type="com.sms.entity.Supplies"/>
+	<typeAlias alias="getSearchClass" type="com.sms.entity.TableView"/>
+		
+	<resultMap id="getIssueMap" class="getIssueClass">		
+		<result column="issued_id" 		property="issueId"/>
+		<result column="supply_id" 		property="supplyId"/>
+		<result column="quantity" 	property="quantity"/>
+		<result column="reorder_level"  property="reorderLevel"/>
+		<result column="issue_date" 	property="issueDate"/>	
+		<result column="item_name" 		property="itemName"/>
+		<result column="requestor" 		property="requestor"/>	
+		<result column="dept_id" 		property="departmentId"/>
+		<result column ="department_name" property="departmentName"/>	
+		<result column="last_user" 		property="lastUser"/>
+		<result column="last_update" 	property="lastUpdate"/>		
+	</resultMap>
+	
+	
+		
+	<resultMap id="getSearchMap" class="getSearchClass">		
+		<result column="issued_id" 		property="issueId"/>
+		<result column="supply_id" 		property="supplyId"/>
+		<result column="quantity" 		property="quantity"/>
+		<result column="reorder_level"  property="reorderLevel"/>
+		<result column="issue_date" 	property="issueDate"/>	
+		<result column="item_name" 		property="itemName"/>
+		<result column="requestor" 		property="requestor"/>	
+		<result column="dept_id" 		property="departmentId"/>
+		<result column ="department_name" property="departmentName"/>	
+		<result column="last_user" 		property="lastUser"/>
+		<result column="last_update" 	property="lastUpdate"/>		
+	</resultMap>
+			
+	<resultMap id="getItems" class="getItemsClass">		
+		<result column="item_name" property="itemName"/>
+	</resultMap>
+	
+	<resultMap id="getDepartments" class="getDepartmentsClass">		
+		<result column="department_name" property="departmentName"/>
+		<result column="department_id" property="departmentId"/>
+	</resultMap>
+	
+	<resultMap id="getSupplies" class="getSuppliesClass">			
+			
+		<result column="supply_id" 		property="supplyId"/>
+		<result column="actual_count" 	property="actualCount"/>
+		<result column="reorder_level"  property="reorderLevel"/>		
+		<result column="item_name" 		property="itemName"/>
+		<result column="last_user" 		property="lastUser"/>	
+		<result column="last_update" 	property="lastUpdate"/>			
+		<result column="obsolete_tag" 	property="obsoleteTag"/>			
+	</resultMap>
+
+	
+	<select id="getIssue" resultMap="getIssueMap">
+		SELECT i.issued_id issued_id, s.supply_id supply_id, i.quantity quantity, 
+		s.reorder_level reorder_level, TO_CHAR(issue_date,'dd-MON-yy') issue_date, item_name, requestor, 
+		dept_id, d.department_name department_name, i.last_user last_user, TO_CHAR(i.last_update,'dd-MON-yy') last_update  
+		FROM issued_supplies_group2 i, supplies_group2 s, departments d
+		WHERE i.supply_id = s.supply_id
+		AND d.department_id = i.dept_id
+		ORDER BY i.issued_id ASC
+	</select>	
+	
+	<select id="getSearched" resultMap="getSearchMap">
+		SELECT  i.issued_id issued_id, s.supply_id supply_id, i.quantity quantity, 
+		s.reorder_level reorder_level, TO_CHAR(issue_date,'dd-MON-yy') issue_date, item_name, requestor, 
+		dept_id, d.department_name department_name, i.last_user last_user, TO_CHAR(i.last_update,'dd-MON-yy') last_update  
+		FROM issued_supplies_group2 i, supplies_group2 s, departments d
+		WHERE i.supply_id = s.supply_id
+		AND d.department_id = i.dept_id
+		AND (i.issued_id LIKE '%'||#search#||'%'
+		OR LOWER(item_name) LIKE '%'||LOWER(#search#)||'%')	
+	</select>		
+		
+	<procedure id="insertSupplies" parameterClass="java.util.Map">
+		BEGIN
+			INSERT INTO 
+			ISSUED_SUPPLIES_GROUP2(issued_id, 
+			supply_id, issue_date, requestor,
+			quantity,dept_id,last_user,last_update)	
+							
+			VALUES(issuedSequence.NEXTVAL,#supplyId#, 
+			TO_DATE(TO_DATE(#issueDate#, 'yyyy-mm-dd'), 'dd-MON-yyyy'),#requestor#,
+			#quantity#,#departmentId#,#lastUser#, 
+			TO_DATE(#lastUpdate#, 'dd-mm-yy'));
+			
+			UPDATE supplies_group2 SET actual_count = actual_count-#quantity#
+			WHERE supply_id = #supplyId#;		
+		END;
+	</procedure>	
+	
+	<select id = "selectDepartments" resultMap="getDepartments">
+		select department_name, department_id from departments
+	</select>
+                            		
+	<select id="selectItems" resultMap="getItems">
+	SELECT item_name FROM supplies_group2
+		WHERE LOWER(obsolete_tag) != 'y'
+	</select>	
+
+	<select id="selectSupplies" resultMap="getSupplies">
+		SELECT item_name, supply_id, obsolete_tag, actual_count, 
+		reorder_level, last_user, TO_DATE(last_update, 'dd-MON-yyyy') last_update
+		FROM supplies_group2
+	</select>	
+	
+	<procedure id="updatedSupplies" parameterClass="java.util.Map">
+		BEGIN	
+			UPDATE ISSUED_SUPPLIES_GROUP2  SET 
+			supply_id = #supplyId#, issue_date = TO_DATE(TO_DATE(#issueDate#, 'yyyy-mm-dd'), 'dd-MON-yyyy'), requestor = #requestor#,
+			quantity = #quantity#,dept_id = #departmentId#,last_user = #lastUser#,last_update = TO_DATE(#lastUpdate#, 'dd-mm-yy')	
+			WHERE supply_id = #supplyId#;		
+		END;
+	</procedure>	
+	
+</sqlMap>

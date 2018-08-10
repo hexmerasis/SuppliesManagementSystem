@@ -88,4 +88,28 @@
   	<url-pattern>/changepass</url-pattern>
   </servlet-mapping>
   <!-- END (Lana) -->
+  
+  <!--  CUTE -->
+  
+ <servlet>
+  	<servlet-name>supplies</servlet-name>
+  	<servlet-class>com.sms.servlet.StockSuppliesServlet</servlet-class>
+  	</servlet>
+  
+    <servlet-mapping>
+  	<servlet-name>supplies</servlet-name>
+  	<url-pattern>/insertRecord</url-pattern>
+  	</servlet-mapping>
+  	
+  	<servlet-mapping>
+  	<servlet-name>supplies</servlet-name>
+  	<url-pattern>/searchRecord</url-pattern>
+  	</servlet-mapping>
+    
+  <servlet-mapping>
+  	<servlet-name>supplies</servlet-name>
+  	<url-pattern>/issueSupplies</url-pattern>
+  	</servlet-mapping>
+  	<!-- END CUTE  -->
+  
 </web-app>

@@ -1,0 +1,12 @@
+td{
+	min-width: 115px;
+	min-height: 20px;
+}
+.td{
+	text-indent: 2px;
+}
+a{
+	color: blue;
+	text-decoration: underline;
+	
+}
