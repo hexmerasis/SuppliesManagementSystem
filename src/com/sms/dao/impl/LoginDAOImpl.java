@@ -1,11 +1,11 @@
-package com.cpi.dao.impl;
+package com.sms.dao.impl;
 
 import java.sql.SQLException;
 import java.util.Map;
 
-import com.cpi.dao.LoginDAO;
-import com.cpi.entity.Login;
 import com.ibatis.sqlmap.client.SqlMapClient;
+import com.sms.dao.LoginDAO;
+import com.sms.entity.Login;
 
 public class LoginDAOImpl implements LoginDAO{
 	

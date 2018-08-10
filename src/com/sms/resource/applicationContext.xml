@@ -11,7 +11,7 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 
 	<bean class="org.springframework.orm.ibatis.SqlMapClientFactoryBean" id="sqlMapClient" >
 		<property name="configLocation">
-			<value>/com/cpi/resource/SqlMapConfig.xml</value>
+			<value>/com/sms/resource/SqlMapConfig.xml</value>
 		</property>
 		<property name="dataSource" ref="dataSource"/>
 	</bean>
@@ -23,10 +23,19 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 		<property name="password" value="hr" />
 	</bean>
 	
-	<bean class="com.cpi.dao.impl.LoginDAOImpl" id="loginDAO" depends-on="sqlMapClient">
+	<bean class="com.sms.dao.impl.LoginDAOImpl" id="loginDAO" depends-on="sqlMapClient">
 		<property name="sqlMapClient" ref="sqlMapClient"></property>
 	</bean>
-	<bean class="com.cpi.service.impl.LoginServiceImpl" id="loginService" depends-on="loginDAO">
+	<bean class="com.sms.service.impl.LoginServiceImpl" id="loginService" depends-on="loginDAO">
 		<property name="loginDAO" ref="loginDAO"></property>
 	</bean>
+	
+	<bean id = "suppliesDAO" class = "com.sms.dao.impl.SuppliesDAOImpl" depends-on = "sqlMapClient">
+		<property name = "sqlMapClient" ref = "sqlMapClient"/>
+	</bean>
+	
+	<bean id = "suppliesService" class = "com.sms.service.impl.SuppliesServiceImpl" depends-on = "suppliesDAO">
+		<property name = "suppliesDAO" ref = "suppliesDAO"/>
+	</bean>
+	
 </beans>

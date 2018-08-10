@@ -2,7 +2,7 @@
 <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sqlmap-2.dtd">
 <sqlMap namespace="Login">
 
-	<typeAlias alias="LoginClass" type="com.cpi.entity.Login"/>
+	<typeAlias alias="LoginClass" type="com.sms.entity.Login"/>
 	
 	<resultMap id="getLoginMap" class="LoginClass">
 		<result column="user_id" 		property="userId"/>
@@ -32,7 +32,6 @@
 		active_tag, access_level, entry_date, last_login, last_user, last_update 
 		FROM sms_users_group2
 		WHERE user_id = #userId#
-<!-- 		AND password = #password# -->
 	</select>
 
 	<select id="getUserInfo" resultMap="getUserMap">

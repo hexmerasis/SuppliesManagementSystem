@@ -7,7 +7,7 @@
   
   <servlet>
   	<servlet-name>login</servlet-name>
-  	<servlet-class>com.cpi.servlet.LoginController</servlet-class>
+  	<servlet-class>com.sms.servlet.LoginController</servlet-class>
   </servlet>
   
   <servlet-mapping>
@@ -15,7 +15,13 @@
   	<url-pattern>/login</url-pattern>
   </servlet-mapping>
   
-  <!-- <session-config>
-  	<session-timeout>15</session-timeout>
-  </session-config> -->
+  <servlet>
+		<servlet-name>suppliesmaintenance</servlet-name>
+		<servlet-class>com.sms.servlet.SuppliesServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>suppliesmaintenance</servlet-name>
+		<url-pattern>/suppliesmaintenance</url-pattern>
+	</servlet-mapping>
 </web-app>

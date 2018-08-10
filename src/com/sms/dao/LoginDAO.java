@@ -1,9 +1,9 @@
-package com.cpi.dao;
+package com.sms.dao;
 
 import java.sql.SQLException;
 import java.util.Map;
 
-import com.cpi.entity.Login;
+import com.sms.entity.Login;
 
 public interface LoginDAO {
 	
