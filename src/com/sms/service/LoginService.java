@@ -1,4 +1,4 @@
-package com.cpi.service;
+package com.sms.service;
 
 import java.sql.SQLException;
 

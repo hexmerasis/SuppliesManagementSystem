@@ -1,4 +1,4 @@
-package com.cpi.entity;
+package com.sms.entity;
 
 import java.util.Date;
 

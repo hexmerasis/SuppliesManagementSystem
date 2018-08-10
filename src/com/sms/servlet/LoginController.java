@@ -1,4 +1,4 @@
-package com.cpi.servlet;
+package com.sms.servlet;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.cpi.service.LoginService;
+import com.sms.service.LoginService;
 
 public class LoginController extends HttpServlet {
 	
@@ -26,7 +26,7 @@ public class LoginController extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException{
 		ApplicationContext applicationContext = 
-				new ClassPathXmlApplicationContext("/com/cpi/resource/applicationContext.xml");
+				new ClassPathXmlApplicationContext("/com/sms/resource/applicationContext.xml");
 		
 		LoginService loginService = 
 				(LoginService) applicationContext.getBean("loginService");
@@ -65,7 +65,7 @@ public class LoginController extends HttpServlet {
 			throws ServletException, IOException{
 		HttpSession session = request.getSession();
 		ApplicationContext applicationContext = 
-				new ClassPathXmlApplicationContext("/com/cpi/resource/applicationContext.xml");
+				new ClassPathXmlApplicationContext("/com/sms/resource/applicationContext.xml");
 		LoginService loginService = 
 				(LoginService) applicationContext.getBean("loginService");
 		

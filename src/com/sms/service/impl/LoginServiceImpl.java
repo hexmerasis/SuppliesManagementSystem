@@ -1,4 +1,4 @@
-package com.cpi.service.impl;
+package com.sms.service.impl;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -7,9 +7,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.cpi.dao.LoginDAO;
-import com.cpi.entity.Login;
-import com.cpi.service.LoginService;
+import com.sms.dao.LoginDAO;
+import com.sms.entity.Login;
+import com.sms.service.LoginService;
 
 public class LoginServiceImpl implements LoginService{
 	
@@ -49,7 +49,7 @@ public class LoginServiceImpl implements LoginService{
 					}
 					else{
 						loginDAO.updateAttempt(request.getParameter("userId"));
-						if(attempts == 2){
+						if(attempts >= 2){
 							loginDAO.lockAccount(request.getParameter("userId"));
 						}
 					}
