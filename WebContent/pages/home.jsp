@@ -23,6 +23,12 @@
 
 <!-- code para sa module ni lana, redirect kung first time login -->
 
+<c:if test="${currentUserId == currentPassword}">
+	<script>
+		window.location.assign("path ng change password na page ni lana");
+	</script>
+</c:if>
+
 <jsp:include page="header.jsp" />
 <body>
 	<h3><c:out value="Hello ${currentUserFN}!" /></h3>

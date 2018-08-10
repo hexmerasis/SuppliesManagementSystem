@@ -1,5 +1,7 @@
 package com.cpi.entity;
 
+import java.util.Date;
+
 public class Login {
 	private String userId;
 	private String password;
@@ -9,10 +11,10 @@ public class Login {
 	private String email;
 	private String activeTag;
 	private String accessLevel;
-	private String entryDate;
-	private String lastLogin;
+	private Date entryDate;
+	private Date lastLogin;
 	private String lastUser;
-	private String lastUpdate;
+	private Date lastUpdate;
 	
 	public String getUserId() {
 		return userId;
@@ -62,16 +64,16 @@ public class Login {
 	public void setAccessLevel(String accessLevel) {
 		this.accessLevel = accessLevel;
 	}
-	public String getEntryDate() {
+	public Date getEntryDate() {
 		return entryDate;
 	}
-	public void setEntryDate(String entryDate) {
+	public void setEntryDate(Date entryDate) {
 		this.entryDate = entryDate;
 	}
-	public String getLastLogin() {
+	public Date getLastLogin() {
 		return lastLogin;
 	}
-	public void setLastLogin(String lastLogin) {
+	public void setLastLogin(Date lastLogin) {
 		this.lastLogin = lastLogin;
 	}
 	public String getLastUser() {
@@ -80,10 +82,10 @@ public class Login {
 	public void setLastUser(String lastUser) {
 		this.lastUser = lastUser;
 	}
-	public String getLastUpdate() {
+	public Date getLastUpdate() {
 		return lastUpdate;
 	}
-	public void setLastUpdate(String lastUpdate) {
+	public void setLastUpdate(Date lastUpdate) {
 		this.lastUpdate = lastUpdate;
 	}
 	

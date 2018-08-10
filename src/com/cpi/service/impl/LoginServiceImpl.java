@@ -37,7 +37,6 @@ public class LoginServiceImpl implements LoginService{
 			}
 			
 			else{
-				//test
 				Login user = loginDAO.getUserInfo(userInfo);
 				if(user.getActiveTag().equals("N")){
 					request.setAttribute("loginStatus", 2);
@@ -59,10 +58,12 @@ public class LoginServiceImpl implements LoginService{
 				
 				else if(user.getPassword().equals(request.getParameter("password"))){
 					HttpSession session = request.getSession();
-					loginDAO.updateLastLogin(request.getParameter("userId"));						request.setAttribute("loginStatus", 1);
+					loginDAO.updateLastLogin(request.getParameter("userId"));						
 					session.setAttribute("currentUserId", loginDAO.getUserInfo(userInfo).getUserId());
+					session.setAttribute("currentPassword", loginDAO.getUserInfo(userInfo).getPassword());
 					session.setAttribute("currentUserFN", loginDAO.getUserInfo(userInfo).getFirstName());
 					session.setAttribute("currentAccessLevel", loginDAO.getUserInfo(userInfo).getAccessLevel());
+					request.setAttribute("loginStatus", 1);
 				}	
 			}
 		} catch (SQLException e1) {

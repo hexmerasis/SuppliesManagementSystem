@@ -21,88 +21,13 @@ public class LoginDAOImpl implements LoginDAO{
 	
 	public Login getUserInfo(Map<String, Object> userInfo) throws SQLException{
 		Login user = new Login();
-//		String inputId;
 
 		try {
 			user = (Login) this.getSqlMapClient().queryForObject("getLoginInfo", userInfo);
 			return user;
-//			inputId = (String) this.getSqlMapClient().queryForObject("getUserInfo", userInfo.get("userId"));
-			
-//			if(!inputId.equals("")){
-//				if(user.getActiveTag().equals("N")){
-//					return user;
-//				}
-//				
-//				else if(!user.getPassword().equals(userInfo.get("password"))){
-////					Integer attempts = (Integer) this.getSqlMapClient().queryForObject("getUserAttempt", inputId);
-//					if(attempts == null){
-//						//code para mag insert sa table 
-//						try {
-//							this.sqlMapClient.startTransaction();
-//							this.sqlMapClient.getCurrentConnection().setAutoCommit(false);
-//							this.sqlMapClient.startBatch();
-//
-//							this.getSqlMapClient().update("insertAttempt", inputId);
-//
-//							this.sqlMapClient.executeBatch();
-//							this.sqlMapClient.getCurrentConnection().commit();
-//
-//						} catch (SQLException e) {
-//							System.out.println(e.getLocalizedMessage());
-//							this.sqlMapClient.getCurrentConnection().rollback();
-//						} finally {
-//							this.sqlMapClient.endTransaction();
-//						}
-//					}
-//					
-//					else{
-//						try {
-//							this.sqlMapClient.startTransaction();
-//							this.sqlMapClient.getCurrentConnection().setAutoCommit(false);
-//							this.sqlMapClient.startBatch();
-//
-//							this.getSqlMapClient().update("updateAttempt", inputId);
-//							if(attempts == 2){
-//								this.getSqlMapClient().update("lockAccount", inputId);
-//							}
-//							
-//							this.sqlMapClient.executeBatch();
-//							this.sqlMapClient.getCurrentConnection().commit();
-//
-//						} catch (SQLException e) {
-//							System.out.println(e.getLocalizedMessage());
-//							this.sqlMapClient.getCurrentConnection().rollback();
-//						} finally {
-//							this.sqlMapClient.endTransaction();
-//						}
-//					}
-//				}
-//				
-//				else if(user != null && user.getPassword().equals(userInfo.get("password")) && !user.getActiveTag().equals("N")) {
-//					try {
-//						this.sqlMapClient.startTransaction();
-//						this.sqlMapClient.getCurrentConnection().setAutoCommit(false);
-//						this.sqlMapClient.startBatch();
-//
-//						this.getSqlMapClient().update("setLastLogin", user.getUserId());
-//						this.getSqlMapClient().update("removeAttempt", user.getUserId());
-//
-//						this.sqlMapClient.executeBatch();
-//						this.sqlMapClient.getCurrentConnection().commit();
-//						
-//						return user;
-//					
-//					} catch (SQLException e) {
-//						System.out.println(e.getLocalizedMessage());
-//						this.sqlMapClient.getCurrentConnection().rollback();
-//					} finally {
-//						this.sqlMapClient.endTransaction();
-//					}
-//				}
-//			}
 			
 		} catch (SQLException e) {
-			// Exception here
+			e.printStackTrace();
 		}
 		
 		return null;
@@ -187,8 +112,6 @@ public class LoginDAOImpl implements LoginDAO{
 
 			this.sqlMapClient.executeBatch();
 			this.sqlMapClient.getCurrentConnection().commit();
-			
-//			return user;
 		
 		} catch (SQLException e) {
 			System.out.println(e.getLocalizedMessage());

@@ -15,16 +15,12 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.cpi.service.LoginService;
 
-//import com.cpi.service.EmployeeService;
-
 public class LoginController extends HttpServlet {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 2700854818500150822L;
-	
-//	public ArrayList<Map<String, Integer>> loginAttempts = new ArrayList<>();
 	
 	@SuppressWarnings("resource")
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -38,18 +34,24 @@ public class LoginController extends HttpServlet {
 		String page = "";
 		try {
 			loginService.getUserInfo(request);
-			if((Integer)request.getAttribute("loginStatus") == 0){
+			
+			switch ((Integer)request.getAttribute("loginStatus")) {
+			case 0:
 				page = "login.jsp";
 				request.setAttribute("error", "Invalid user name and/or password.");
-			}
-			else if((Integer)request.getAttribute("loginStatus") == 2){
-				page = "login.jsp";
-				request.setAttribute("error", "Account locked. Please contact the administrator.");
-			}
-			else{
+				break;
+				
+			case 1:
 				response.setStatus(201);
 				page = "pages/home.jsp";
+				break;
+				
+			case 2:
+				page = "login.jsp";
+				request.setAttribute("error", "Account locked. Please contact the administrator.");
+				break;
 			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
