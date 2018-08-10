@@ -46,4 +46,46 @@
   	<servlet-name>suppliesStocks</servlet-name>
   	<url-pattern>/nextPage</url-pattern>
   </servlet-mapping>
+  
+  <!-- Lana -->
+   <servlet>
+  	<servlet-name>user</servlet-name>
+  	<servlet-class>com.sms.servlet.UserServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>user</servlet-name>
+  	<url-pattern>/userMaintenance</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>user</servlet-name>
+  	<url-pattern>/updatePassword</url-pattern>
+  </servlet-mapping>
+  
+    <servlet-mapping>
+  	<servlet-name>user</servlet-name>
+  	<url-pattern>/saveRecord</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>user</servlet-name>
+  	<url-pattern>/updateRecord</url-pattern>
+  </servlet-mapping>
+  
+   <servlet-mapping>
+  	<servlet-name>user</servlet-name>
+  	<url-pattern>/searchUser</url-pattern>
+  </servlet-mapping>
+  
+   <servlet>
+  	<servlet-name>changepass</servlet-name>
+  	<servlet-class>com.sms.session.UserSessionController</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>changepass</servlet-name>
+  	<url-pattern>/changepass</url-pattern>
+  </servlet-mapping>
+  <!-- END (Lana) -->
 </web-app>

@@ -4,4 +4,5 @@
 <sqlMapConfig>
 	<sqlMap resource="com/sms/dao/ibatis/Login.xml"/>
 	<sqlMap resource="com/sms/dao/ibatis/SuppliesStocks.xml"/>
+	<sqlMap resource="com/sms/dao/ibatis/user.xml"/>
 </sqlMapConfig>
