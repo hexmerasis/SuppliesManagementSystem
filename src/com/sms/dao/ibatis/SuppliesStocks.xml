@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sqlmap-2.dtd">
+<sqlMap namespace="SuppliesStocks">
+
+	<typeAlias alias="SuppliesStocksClass" type="com.sms.entity.SuppliesStock"/>
+	<typeAlias alias="SuppliesClass" type="com.sms.entity.Supply"/>
+	
+	<resultMap id="getSuppliesStocksMap" class="SuppliesStocksClass">
+		<result column="stock_id" property="stockId"/>
+		<result column="supply_id" property="supplyId"/>
+		<result column="item_name" property="itemName"/>
+		<result column="date_added" property="dateAdded"/>
+		<result column="purchase_date" property="purchaseDate"/>
+		<result column="reference_no" property="referenceNo"/>
+		<result column="quantity" property="quantity"/>
+		<result column="last_user" property="lastUser"/>
+		<result column="last_update" property="lastUpdate"/>
+	</resultMap>
+	
+	<resultMap id="getSuppliesItemMap" class="SuppliesClass">
+		<result column="supply_id" property="supplyId"/>
+		<result column="item_name" property="itemName"/>
+	</resultMap>
+	
+	<select id="getCurrentID" resultClass="java.lang.Integer">
+		SELECT stock_stockId_seq.NEXTVAL
+		FROM dual
+	</select>
+	
+	<select id="getSuppliesStocks" resultMap="getSuppliesStocksMap">
+		SELECT st.stock_id, st.supply_id, s.item_name, st.date_added, st.purchase_date, st.reference_no,
+			st.quantity, st.last_user, st.last_update
+		FROM supplies_stocks_group2 st, supplies_group2 s
+		WHERE st.supply_id = s.supply_id
+	</select>
+	
+	<select id="searchSuppliesStocks" resultMap="getSuppliesStocksMap" parameterClass="java.util.Map">
+		SELECT st.stock_id, st.supply_id, s.item_name, st.date_added, st.purchase_date, st.reference_no,
+			st.quantity, st.last_user, st.last_update
+		FROM supplies_stocks_group2 st, supplies_group2 s
+		WHERE st.supply_id = s.supply_id AND (st.stock_id LIKE '%' || NVL(#stockId#, st.stock_id) || '%' OR LOWER(s.item_name) LIKE LOWER('%' || NVL(#itemName#,LOWER(s.item_name))  || '%'))
+	</select>
+	
+	<select id="getSuppliesItemList" resultMap="getSuppliesItemMap">
+		SELECT supply_id, item_name 
+		FROM supplies_group2
+		WHERE obsolete_tag != 'Y'
+	</select>
+	
+	<insert id="insertSuppliesStocks" parameterClass="java.util.Map">
+		INSERT INTO supplies_stocks_group2(stock_id, supply_id, date_added, purchase_date,
+			reference_no, quantity, last_user)
+		VALUES(stock_stockId_seq.NEXTVAL, #supplyId#, #dateAdded#, #purchaseDate#, #referenceNo#,
+			#quantity#, #lastUser#)
+	</insert>
+	
+	<update id="updateSuppliesStocks" parameterClass="java.util.HashMap">
+		UPDATE supplies_stocks_group2
+		SET supply_id = #supplyId#,
+			purchase_date = #purchaseDate#,
+			reference_no = #referenceNo#,
+			last_user = #lastUser#,
+			last_update = SYSDATE
+		WHERE stock_id = #stockId#
+	</update>
+	
+	<update id="updateSupplies" parameterClass="java.util.Map">
+		UPDATE supplies_group2
+		SET actual_count = #quantity# + actual_count
+		WHERE supply_id = #supplyId#
+	</update>
+	
+</sqlMap>
