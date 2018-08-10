@@ -6,7 +6,6 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-
 <title>Home</title>
 
 <script type="text/javascript" src="../js/prototype.js"></script>
@@ -38,7 +37,7 @@
 			$('maintenance').hide();
 			$('reports').hide();
 		</script>
-	</c:if>
+	</c:if>	
 </body>
 <jsp:include page="footer.jsp"></jsp:include>
 </html>
