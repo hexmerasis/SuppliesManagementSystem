@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sqlmap-2.dtd">
+<sqlMap namespace="Login">
+
+	<typeAlias alias="LoginClass" type="com.cpi.entity.Login"/>
+	
+	<resultMap id="getLoginMap" class="LoginClass">
+		<result column="user_id" 		property="userId"/>
+		<result column="password" 		property="password"/>
+		<result column="first_name" 	property="firstName"/>
+		<result column="last_name"	 	property="lastName"/>
+		<result column="middle_initial" property="middleInitial"/>
+		<result column="email"		 	property="email"/>
+		<result column="active_tag" 	property="activeTag"/>
+		<result column="access_level" 	property="accessLevel"/>
+		<result column="entry_date" 	property="entryDate"/>
+		<result column="last_login" 	property="lastLogin"/>
+		<result column="last_user" 		property="lastUser"/>
+		<result column="last_update" 	property="lastUpdate"/>
+	</resultMap>
+	
+	<resultMap id="getUserMap" class="java.lang.String">
+		<result column="user_id" 		property="userId"/>
+	</resultMap>
+	
+	<resultMap id="getUserAttemptMap" class="java.lang.Integer">
+		<result column="attempts" 		property="attempts"/>
+	</resultMap>
+	
+	<select id="getLoginInfo" resultMap="getLoginMap">
+		SELECT user_id, password, first_name, last_name, middle_initial, email,
+		active_tag, access_level, entry_date, last_login, last_user, last_update 
+		FROM sms_users_group2
+		WHERE user_id = #userId#
+<!-- 		AND password = #password# -->
+	</select>
+
+	<select id="getUserInfo" resultMap="getUserMap">
+		SELECT user_id
+		FROM sms_users_group2
+		WHERE user_id = #userId#
+	</select>
+	
+	<select id="getUserAttempt" resultMap="getUserAttemptMap">
+		SELECT attempts
+		FROM login_attempts
+		WHERE user_id = #userId#
+	</select>
+	
+	<insert id="setLastLogin" parameterClass="java.lang.String">
+		UPDATE sms_users_group2
+		SET last_login = SYSDATE
+		WHERE user_id = #userId#
+	</insert>
+	
+	<insert id="insertAttempt" parameterClass="java.lang.String">
+		INSERT INTO login_attempts
+		VALUES(#userId#, 1)
+	</insert>
+	
+	<insert id="updateAttempt" parameterClass="java.lang.String">
+		UPDATE login_attempts
+		SET attempts = (SELECT attempts + 1 FROM login_attempts WHERE user_id = #userId#)
+		WHERE user_id = #userId#
+	</insert>
+	
+	<insert id="removeAttempt" parameterClass="java.lang.String">
+		DELETE FROM login_attempts WHERE user_id = #userId#
+	</insert>
+	
+	<insert id="lockAccount" parameterClass="java.lang.String">
+		UPDATE sms_users_group2
+		SET active_tag = 'N'
+		WHERE user_id = #userId#
+	</insert>
+	
+	<insert id="truncateAttempts">
+		TRUNCATE TABLE login_attempts
+	</insert>
+
+</sqlMap>

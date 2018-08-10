@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd"
+	default-init-method="init">
+
+	<bean class="org.springframework.orm.ibatis.SqlMapClientFactoryBean" id="sqlMapClient" >
+		<property name="configLocation">
+			<value>/com/cpi/resource/SqlMapConfig.xml</value>
+		</property>
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+		<property name="url" value="jdbc:oracle:thin:@192.10.10.8:1521:TRNG" />
+		<property name="username" value="HR" />
+		<property name="password" value="hr" />
+	</bean>
+	
+	<bean class="com.cpi.dao.impl.LoginDAOImpl" id="loginDAO" depends-on="sqlMapClient">
+		<property name="sqlMapClient" ref="sqlMapClient"></property>
+	</bean>
+	<bean class="com.cpi.service.impl.LoginServiceImpl" id="loginService" depends-on="loginDAO">
+		<property name="loginDAO" ref="loginDAO"></property>
+	</bean>
+</beans>
