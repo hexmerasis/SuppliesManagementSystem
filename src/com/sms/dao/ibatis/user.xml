@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sqlmap-2.dtd">
+<sqlMap namespace="usr">
+	<typeAlias alias="UserClass" type="com.sms.entity.User" />
+
+	<resultMap id="getUserMap" class="UserClass">
+		<result column="user_id" property="userId" />
+		<result column="password" property="password" />
+		<result column="first_name" property="firstName" />
+		<result column="last_name" property="lastName" />
+		<result column="middle_initial" property="middleInitial" />
+		<result column="email" property="email" />
+		<result column="active_tag" property="activeTag" />
+		<result column="access_level" property="accessLevel" />
+		<result column="entry_date" property="entryDate" />
+		<result column="last_login" property="lastLogin" />
+		<result column="last_user" property="lastUser" />
+		<result column="last_update" property="lastUpdate" />
+	</resultMap>
+	
+	<resultMap id="getPasswordMap" class="UserClass">
+		<result column="user_id" property="userId" />
+		<result column="password" property="password" />
+	</resultMap>
+
+	<select id="getUser" resultMap="getUserMap">
+		SELECT 	user_id,
+				password,
+				first_name,
+				last_name,
+				middle_initial,
+				email,
+				active_tag,
+				access_level,
+				TO_CHAR(entry_date,'dd-MM-yyyy') entry_date,
+				TO_CHAR(last_login,'dd-MM-yyyy HH12:MI AM') last_login,
+				last_user,
+				TO_CHAR(last_update,'dd-MM-yyyy HH12:MI AM') last_update
+		FROM sms_users_group2
+	</select>
+	
+	<select id="getSearch" resultMap="getUserMap" parameterClass="java.util.HashMap">
+		SELECT 	user_id,
+				password,
+				first_name,
+				last_name,
+				middle_initial,
+				email,
+				active_tag,
+				access_level,
+				TO_CHAR(entry_date,'dd-MM-yyyy') entry_date,
+				TO_CHAR(last_login,'dd-MM-yyyy HH12:MI AM') last_login,
+				last_user,
+				TO_CHAR(last_update,'dd-MM-yyyy HH12:MI AM') last_update
+		FROM sms_users_group2
+		WHERE user_id LIKE '%' || NVL(#userId#, user_id)  || '%'
+	</select>
+
+	<insert id="insertUser" parameterClass="java.util.Map">
+		INSERT INTO sms_users_group2
+			(user_id,
+			password,
+			first_name,
+			last_name,
+			middle_initial,
+			email,
+			active_tag,
+			access_level,
+			last_login,
+			last_user,
+			last_update)
+		VALUES (#userId#,
+			#password#,
+			#firstName#,
+			#lastName#,
+			#middleInitial#,
+			#email#,
+			#activeTag#,
+			#accessLevel#,
+			SYSDATE,
+			#lastUser#,
+			SYSDATE)
+	</insert>
+
+	<insert id="updateUser" parameterClass="java.util.Map">
+		UPDATE sms_users_group2
+		SET user_id = #userId#,
+			first_name = #firstName#,
+			last_name = #lastName#,
+			middle_initial = #middleInitial#,
+			email = #email#,
+			active_tag = #activeTag#,
+			access_level = #accessLevel#,
+			last_user = #lastUser#,
+			last_update = SYSDATE 
+		WHERE user_id = #userId#
+	</insert>
+	
+		<insert id="updateThisUser" parameterClass="java.util.Map">
+		UPDATE sms_users_group2
+		SET user_id = #userId#,
+			first_name = #firstName#,
+			last_name = #lastName#,
+			middle_initial = #middleInitial#,
+			email = #email#,
+			last_user = #lastUser#,
+			last_update = SYSDATE 
+		WHERE user_id = #userId#
+	</insert>
+
+	<select id="getPassword" resultMap="getPasswordMap">
+		SELECT 	user_id,
+				password
+		FROM sms_users_group2 
+		WHERE user_id = #userId#
+	</select>
+
+
+	<insert id="updatePassword" parameterClass="java.util.Map">
+		UPDATE sms_users_group2
+		SET password = #password#,
+			last_user = #lastUser# ,
+			last_update = SYSDATE 
+		WHERE user_id = #userId#
+	</insert>
+</sqlMap>
+	
