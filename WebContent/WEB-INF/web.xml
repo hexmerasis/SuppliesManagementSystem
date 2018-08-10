@@ -14,4 +14,14 @@
   	<servlet-name>login</servlet-name>
   	<url-pattern>/login</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+		<servlet-name>suppliesmaintenance</servlet-name>
+		<servlet-class>com.sms.servlet.SuppliesServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>suppliesmaintenance</servlet-name>
+		<url-pattern>/suppliesmaintenance</url-pattern>
+	</servlet-mapping>
 </web-app>
