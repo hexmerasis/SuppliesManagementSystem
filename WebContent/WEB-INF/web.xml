@@ -14,4 +14,36 @@
   	<servlet-name>login</servlet-name>
   	<url-pattern>/login</url-pattern>
   </servlet-mapping>
+  
+  
+  <!-- Mel -->
+  <servlet>
+  	<servlet-name>suppliesStocks</servlet-name>
+  	<servlet-class>com.sms.servlet.Servlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>suppliesStocks</servlet-name>
+  	<url-pattern>/suppliesStocks</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>suppliesStocks</servlet-name>
+  	<url-pattern>/addSuppliesStocksRecord</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>suppliesStocks</servlet-name>
+  	<url-pattern>/updateSuppliesStocksRecord</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>suppliesStocks</servlet-name>
+  	<url-pattern>/searchSuppliesStocksRecord</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>suppliesStocks</servlet-name>
+  	<url-pattern>/nextPage</url-pattern>
+  </servlet-mapping>
 </web-app>
