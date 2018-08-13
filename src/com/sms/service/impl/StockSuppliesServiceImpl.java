@@ -103,7 +103,7 @@ public class StockSuppliesServiceImpl implements StockSuppliesService {
 
 			for (int i = 0; i < supply.size(); i++) {
 				if (itemName.equalsIgnoreCase(supply.get(i).getItemName())) {				
-					request.setAttribute("sytemMessage", itemName +  "only has " + supply.get(i).getActualCount() );
+					request.setAttribute("sytemMessage", itemName +  " only have " + supply.get(i).getActualCount() );
 					break;
 				}
 			}
@@ -118,6 +118,8 @@ public class StockSuppliesServiceImpl implements StockSuppliesService {
 		Map<String, Object> issueUpdate = new HashMap<>();
 		List<Departments> deptNo = suppliesDao.getDepartments();
 		List<Supplies> supply = suppliesDao.getSupplies();
+		
+		
 		for (int i = 0; i < deptNo.size(); i++) {
 			if (deptNo.get(i).getDepartmentName().equalsIgnoreCase(request.getParameter("departmentName"))) {
 				issueUpdate.put("departmentId", deptNo.get(i).getDepartmentId());
@@ -138,6 +140,7 @@ public class StockSuppliesServiceImpl implements StockSuppliesService {
 		issueUpdate.put("issueId", request.getParameter("issueId"));
 
 		this.suppliesDao.updateSupplies(issueUpdate);
+		
 	}
 
 	@Override
@@ -146,9 +149,6 @@ public class StockSuppliesServiceImpl implements StockSuppliesService {
 		request.setAttribute("departmentList", suppliesDao.getDepartments());
 		request.setAttribute("itemList", suppliesDao.getItemName());
 		request.setAttribute("supplies", suppliesDao.getSupplies());
-
 	}
 	
-	
-
 }

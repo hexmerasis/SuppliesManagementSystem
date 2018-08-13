@@ -44,6 +44,13 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 	<bean class="com.sms.service.impl.UserServiceImpl" id="userService" depends-on="userDAO">
 		<property name="userDAO" ref="userDAO"></property>
 	</bean>
+		<bean id = "suppliesDAO" class = "com.sms.dao.impl.SuppliesDAOImpl" depends-on = "sqlMapClient">
+		<property name = "sqlMapClient" ref = "sqlMapClient"/>
+	</bean>
+	
+	<bean id = "suppliesService" class = "com.sms.service.impl.SuppliesServiceImpl" depends-on = "suppliesDAO">
+		<property name = "suppliesDAO" ref = "suppliesDAO"/>
+	</bean>
 	
 	<bean class="com.sms.dao.impl.StockSuppliesDaoImpl" id="StockSuppliesDAO"
 		depends-on="sqlMapClient">
@@ -54,5 +61,4 @@ http://www.springframework.org/schema/security http://www.springframework.org/sc
 		depends-on="StockSuppliesDAO">
 		<property name="suppliesDao" ref="StockSuppliesDAO"></property>
 	</bean>
-	
 </beans>

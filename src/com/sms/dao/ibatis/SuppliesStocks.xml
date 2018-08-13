@@ -22,16 +22,12 @@
 		<result column="item_name" property="itemName"/>
 	</resultMap>
 	
-	<select id="getCurrentID" resultClass="java.lang.Integer">
-		SELECT stock_stockId_seq.NEXTVAL
-		FROM dual
-	</select>
-	
 	<select id="getSuppliesStocks" resultMap="getSuppliesStocksMap">
 		SELECT st.stock_id, st.supply_id, s.item_name, st.date_added, st.purchase_date, st.reference_no,
 			st.quantity, st.last_user, st.last_update
 		FROM supplies_stocks_group2 st, supplies_group2 s
 		WHERE st.supply_id = s.supply_id
+		ORDER BY st.stock_id
 	</select>
 	
 	<select id="searchSuppliesStocks" resultMap="getSuppliesStocksMap" parameterClass="java.util.Map">
@@ -39,6 +35,7 @@
 			st.quantity, st.last_user, st.last_update
 		FROM supplies_stocks_group2 st, supplies_group2 s
 		WHERE st.supply_id = s.supply_id AND (st.stock_id LIKE '%' || NVL(#stockId#, st.stock_id) || '%' OR LOWER(s.item_name) LIKE LOWER('%' || NVL(#itemName#,LOWER(s.item_name))  || '%'))
+		ORDER BY st.stock_id
 	</select>
 	
 	<select id="getSuppliesItemList" resultMap="getSuppliesItemMap">

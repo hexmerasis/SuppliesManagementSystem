@@ -46,7 +46,7 @@ public class StockSuppliesDaoImpl implements StockSuppliesDao {
 			this.sqlMapClient.getCurrentConnection().setAutoCommit(false);
 			this.sqlMapClient.startBatch();
 
-			this.getSqlMapClient().update("insertSupplies", supplies);
+			this.getSqlMapClient().update("insertIssuedSupplies", supplies);
 
 			this.sqlMapClient.executeBatch();
 
@@ -65,7 +65,6 @@ public class StockSuppliesDaoImpl implements StockSuppliesDao {
 			this.sqlMapClient.startTransaction();
 			this.sqlMapClient.getCurrentConnection().setAutoCommit(false);
 			this.sqlMapClient.startBatch();
-		
 			this.getSqlMapClient().update("updatedSupplies", supplies);
 			this.sqlMapClient.executeBatch();
 
@@ -96,7 +95,7 @@ public class StockSuppliesDaoImpl implements StockSuppliesDao {
 	public List<ItemNames> getItemName() throws SQLException {
 		List<ItemNames> Items = new ArrayList<>();
 		try {
-
+			
 			Items = this.getSqlMapClient().queryForList("selectItems");
 
 		} catch (SQLException e) {

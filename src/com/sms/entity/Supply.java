@@ -1,10 +1,10 @@
 package com.sms.entity;
 
 public class Supply {
-	private int supplyId;
+	private long supplyId;
 	private String itemName;
 	
-	public int getSupplyId() {
+	public long getSupplyId() {
 		return supplyId;
 	}
 	

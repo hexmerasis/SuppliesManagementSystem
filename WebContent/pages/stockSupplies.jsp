@@ -56,19 +56,30 @@
 						<td><input type="date" data-date=""
 							data-date-format="DD MMMM YYYY" value="" id="iDate" /></td>
 					</tr>
-				</table>
-				<div align="center">
-					<div id="btnR">
-						<input type="button" name="issue" id="iRequest"
-							value="Issue Request">
-					</div>
-					<input type="button" name="save" id="saveRow" value="Save">
-					<input type="button" name="cancel" id="cancelRow" value="Cancel">
-					<br>
-					<div id="theSearch">
+					
+					<tr>
+					<td><div id="theSearch" align = "center">
 						<input type="text" id="iSearch"><input type = "button" id = "searchFor" value = "Search">
+					</div></td>
+					</tr>
+				</table>
+				<div align="center" id = "buttons">
+					<div id="btnR">
+						<input type="button" name="issue" id="iRequest"value="Issue Request" class = "btns">
 					</div>
+					
+					<br>
+					<input type="button" name="save" id="saveRow" value="Save" class = "btns">
+					<br>
+					<br>
+					<input type="button" name="cancel" id="cancelRow" value="Cancel" class = "btns">
+					<br>
+					
 				</div>
+				
+				<!-- <div id="theSearch" align = "center">
+						<input type="text" id="iSearch"><input type = "button" id = "searchFor" value = "Search">
+					</div> -->
 			</fieldset>
 		</div>
 		<br> <br>
@@ -99,6 +110,7 @@
 							<td class="td" align="center">${supply.lastUpdate}</td>
 						</tr>
 					</c:forEach>
+					
 				</table>
 
 
@@ -115,7 +127,8 @@
 	var message = "insert";
 	var method = "";
 	var issueId = 0;
-	
+	var cancelCheck = 0;
+	var saveContent = 0;
 	
 	$('searchFor').observe("click", function(){
 		new Ajax.Request(contextPath + "/searchRecord", {
@@ -141,16 +154,36 @@
 	}
 	$("saveRow").observe("click", function() {
 
-		emptyHandler()
-
-		if (handler == 1) {
-			addRecord();
+		if(saveContent == 1){
+		
+			emptyHandler();
+			
+			if (handler == 1){
+				
+				addRecord();
+				}
+		}else{
+			
+			
+			new Ajax.Request(contextPath + "/insertRecord", {
+				method : "POST",
+				parameters : {
+					action : "commitRecord"
+				},
+				onComplete : function(response) {
+					window.location.reload();
+				}
+			}) 
+			
 		}
 	});
 
 	$("cancelRow").observe("click", function() {
 
-		clearAll();
+		if(cancelCheck == 1){
+			clearAll();
+			
+
 
 		new Ajax.Request(contextPath + "/issueSupplies", {
 			method : "GET",
@@ -158,30 +191,52 @@
 				action : "pageOut"
 			},
 			onComplete : function(response) {
+				cancelCheck = 0;
 				window.location.reload();
 
 			}
 		})
+		}else{
+			
+			new Ajax.Request(contextPath + "/loginfromIssue", {
+				method : "POST",	parameters: {
 
+			},
+				onComplete : function(response) {
+					window.location.reload();
+
+				}
+			})
+		}
 	});
 
 	function emptyHandler() {
+		
+		 if($("iQuantity").value==null || $("iQuantity").value== "" || 
+			$("iRequestor").value==null || $("iRequestor").value== ""||
+		    $("iDate").value==null || $("iDate").value== "" || $("departments").value == null ||
+		    $("departments").value ==""){
+			 
+			alert("Check fields or proper values");
+			handler = 0;
+		}else if(($("iQuantity").value<0)||$("iQuantity").value>9999){
+			alert("Check fields or proper values");
+			handler = 0;
+		}else {
 
-		var isNull = false;
-		$w("iQuantity iRequestor").each(function(c) {
-			if ($F(c) == null || $F(c) == "") {
-				isNull = true;
+			handler = 1;
 			}
-			if (isNull) {
-				handler = 0;
-				alert("No fields should be null");
-			} else {
-				handler = 1;
-			}
-		})
-
+ 
 	}
-	$("iRequest").observe("click", function() {
+	$("iRequest").observe("click", function() {		
+		cancelCheck = 1;
+		saveContent = 1;
+		$("iQuantity").value="";
+		$("iRequestor").value="";
+		$("iDate").value="";
+		$("iName").value="";
+		$("departments").value ="";
+		
 
 		$("iName").disabled = false;
 		$("iQuantity").disabled = false;
@@ -224,6 +279,7 @@
 					$("departments").value = "";
 					$("iDate").value = "";
 					$("main").update(response.responseText);
+					saveContent = 0;
 				}
 			})
 		} else if (message == "update") {
@@ -240,6 +296,7 @@
 
 				},
 				onComplete : function(response) {
+					saveContent = 0;
 					window.location.reload();
 				}
 			})
@@ -252,7 +309,7 @@
 	}
 
 	$$(".tableRow").each(function(row) {
-
+		
 		row.observe("click", function() {
 			$("iName").value = row.down("td", 1).innerHTML;
 			$("iQuantity").value = row.down("td", 4).innerHTML;
@@ -262,7 +319,8 @@
 		})
 
 		row.down('a', 0).observe("click", function() {
-
+			cancelCheck = 1;
+			saveContent = 1;
 			$("iName").disabled = false;
 			$("iQuantity").disabled = false;
 			$("iRequestor").disabled = false;

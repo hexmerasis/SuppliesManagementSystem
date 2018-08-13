@@ -91,7 +91,7 @@
   
   <!--  CUTE -->
   
- <servlet>
+ 	<servlet>
   	<servlet-name>supplies</servlet-name>
   	<servlet-class>com.sms.servlet.StockSuppliesServlet</servlet-class>
   	</servlet>
@@ -110,6 +110,12 @@
   	<servlet-name>supplies</servlet-name>
   	<url-pattern>/issueSupplies</url-pattern>
   	</servlet-mapping>
+  	
+  
+  <servlet-mapping>
+  	<servlet-name>login</servlet-name>
+  	<url-pattern>/loginfromIssue</url-pattern>
+  </servlet-mapping>
   	<!-- END CUTE  -->
   
 </web-app>

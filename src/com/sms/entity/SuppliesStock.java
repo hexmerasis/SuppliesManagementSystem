@@ -4,8 +4,8 @@ import java.util.Date;
 
 public class SuppliesStock {
 
-	private int stockId;
-	private int supplyId;
+	private long stockId;
+	private long supplyId;
 	private String itemName;
 	private Date dateAdded;
 	private Date purchaseDate;
@@ -14,7 +14,7 @@ public class SuppliesStock {
 	private String lastUser;
 	private Date lastUpdate;
 	
-	public int getStockId() {
+	public long getStockId() {
 		return stockId;
 	}
 	
@@ -22,7 +22,7 @@ public class SuppliesStock {
 		this.stockId = stockId;
 	}
 	
-	public int getSupplyId() {
+	public long getSupplyId() {
 		return supplyId;
 	}
 	

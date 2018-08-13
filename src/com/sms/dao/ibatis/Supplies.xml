@@ -1,12 +1,89 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sqlmap-2.dtd">
 <sqlMap namespace="Supplies">
+	
+	<typeAlias alias = "SuppliesClass2" type = "com.sms.entity.Supplies"/>
+	<typeAlias alias = "SupplyTypesClass" type = "com.sms.entity.SupplyTypes"/>
+	
 	<typeAlias alias="getIssueClass" type="com.sms.entity.TableView"/>
 	<typeAlias alias="getItemsClass" type="com.sms.entity.ItemNames"/>
 	<typeAlias alias="getDepartmentsClass" type="com.sms.entity.Departments"/>	
 	<typeAlias alias="getSuppliesClass" type="com.sms.entity.Supplies"/>
 	<typeAlias alias="getSearchClass" type="com.sms.entity.TableView"/>
-		
+	
+	<resultMap id = "getSuppliesMap"  class = "SuppliesClass2">
+		<result column = "Supply ID"	property = "supplyId"/>
+		<result column = "Type Name"	property = "typeName"/>
+		<result column = "Item Name"	property = "itemName"/>
+		<result column = "Item Unit"	property = "itemUnit"/>
+		<result column = "Obsolete Tag"	property = "obsoleteTag"/>
+		<result column = "Location"	property = "location"/>
+		<result column = "Reorder Level"	property = "reorderLevel"/>
+		<result column = "Actual Count"	property = "actualCount"/>
+		<result column = "Remarks"	property = "remarks"/>
+		<result column = "Date Added"	property = "dateAdded"/>
+		<result column = "Last User"	property = "lastUser"/>
+		<result column = "Last Update"	property = "lastUpdate"/>
+	</resultMap>
+	
+	<resultMap id = "getSupplyTypesMap" class = "SupplyTypesClass">
+		<result column = "Type Names" property = "typeName"/>
+	</resultMap>
+	
+	<select id = "getSupplies" resultMap = "getSuppliesMap">
+	SELECT supply_id "Supply ID", stg.type_name "Type Name",
+	item_name "Item Name", item_unit "Item Unit", obsolete_tag "Obsolete Tag", location "Location",
+	reorder_level "Reorder Level", actual_count "Actual Count", remarks "Remarks", date_added "Date Added", 
+	sg.last_user "Last User", sg.last_update "Last Update"
+	FROM SUPPLIES_GROUP2 sg, SUPPLY_TYPES_GROUP2 stg
+	WHERE sg.supply_type_id = stg.supply_type_id
+	ORDER BY supply_id
+	</select>
+	
+	<select id = "searchSupplies" parameterClass = "java.lang.String" resultMap = "getSuppliesMap">
+	SELECT supply_id "Supply ID", stg.type_name "Type Name",
+	item_name "Item Name", item_unit "Item Unit", obsolete_tag "Obsolete Tag", location "Location",
+	reorder_level "Reorder Level", actual_count "Actual Count", remarks "Remarks", date_added "Date Added", 
+	sg.last_user "Last User", sg.last_update "Last Update"
+	FROM SUPPLIES_GROUP2 sg, SUPPLY_TYPES_GROUP2 stg
+	WHERE sg.supply_type_id = stg.supply_type_id
+	AND UPPER(item_name) LIKE UPPER('%'||#txtSearch#||'%')
+	ORDER BY supply_id
+	</select>
+	
+	<select id = "getSupplyTypes" resultMap = "getSupplyTypesMap">
+	SELECT type_name "Type Names" FROM SUPPLY_TYPES_GROUP2
+	</select>
+	
+	<insert id = "insertSupplies" parameterClass = "java.util.Map">
+		INSERT INTO SUPPLIES_GROUP2
+		(supply_id, supply_type_id, item_name, item_unit, obsolete_tag, location,
+		reorder_level, actual_count, remarks, date_added, last_user, last_update)
+		VALUES
+		(seq_supplies_group2.NEXTVAL, (SELECT supply_type_id FROM SUPPLY_TYPES_GROUP2 WHERE type_name = #typeName#), 
+		#itemName#, #itemUnit#, #obsoleteTag#, #location#, 
+		#reorderLevel#, #actualCount#, #remarks#, SYSDATE, #lastUser#, SYSDATE)
+	</insert>
+	
+	<insert id = "updateSupplies2" parameterClass = "java.util.Map">
+		UPDATE SUPPLIES_GROUP2
+		SET
+		supply_type_id = (SELECT supply_type_id FROM SUPPLY_TYPES_GROUP2 WHERE type_name = #typeName#),
+		item_name = #itemName#,
+		item_unit = #itemUnit#,
+		obsolete_tag = #obsoleteTag#,
+		location = #location#,
+		reorder_level = #reorderLevel#,
+		remarks = #remarks#,
+		last_user = #lastUser#,
+		last_update = SYSDATE
+		WHERE 
+		supply_id = #supplyID#
+	</insert>
+	
+	
+	
+	
 	<resultMap id="getIssueMap" class="getIssueClass">		
 		<result column="issued_id" 		property="issueId"/>
 		<result column="supply_id" 		property="supplyId"/>
@@ -20,9 +97,6 @@
 		<result column="last_user" 		property="lastUser"/>
 		<result column="last_update" 	property="lastUpdate"/>		
 	</resultMap>
-	
-	
-		
 	<resultMap id="getSearchMap" class="getSearchClass">		
 		<result column="issued_id" 		property="issueId"/>
 		<result column="supply_id" 		property="supplyId"/>
@@ -79,7 +153,7 @@
 		OR LOWER(item_name) LIKE '%'||LOWER(#search#)||'%')	
 	</select>		
 		
-	<procedure id="insertSupplies" parameterClass="java.util.Map">
+	<procedure id="insertIssuedSupplies" parameterClass="java.util.Map">
 		BEGIN
 			INSERT INTO 
 			ISSUED_SUPPLIES_GROUP2(issued_id, 
@@ -116,8 +190,10 @@
 			UPDATE ISSUED_SUPPLIES_GROUP2  SET 
 			supply_id = #supplyId#, issue_date = TO_DATE(TO_DATE(#issueDate#, 'yyyy-mm-dd'), 'dd-MON-yyyy'), requestor = #requestor#,
 			quantity = #quantity#,dept_id = #departmentId#,last_user = #lastUser#,last_update = TO_DATE(#lastUpdate#, 'dd-mm-yy')	
-			WHERE supply_id = #supplyId#;		
+			WHERE issued_id = #issueId#;		
 		END;
 	</procedure>	
+	
+	
 	
 </sqlMap>

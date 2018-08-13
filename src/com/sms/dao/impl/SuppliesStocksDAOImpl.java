@@ -96,7 +96,7 @@ public class SuppliesStocksDAOImpl implements SuppliesStocksDAO{
 			this.sqlMapClient.startBatch();
 			
 			this.getSqlMapClient().update("updateSupplies", params);
-			System.out.println("Update Supplies");
+			
 			this.sqlMapClient.executeBatch();
 			this.sqlMapClient.getCurrentConnection().commit();
 		} catch (SQLException e) {

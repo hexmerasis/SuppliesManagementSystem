@@ -1,12 +1,29 @@
+body{
+	background-color: #a4f442;
+	
+}
+
 td{
 	min-width: 115px;
 	min-height: 20px;
 }
 .td{
+	
 	text-indent: 2px;
 }
 a{
 	color: blue;
 	text-decoration: underline;
+	
+}
+
+div#buttons{
+
+	float:right;
+}
+
+.btns{
+	min-height: 10px;
+	min-width: 100px;
 	
 }
